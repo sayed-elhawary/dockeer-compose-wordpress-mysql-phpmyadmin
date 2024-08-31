@@ -1,0 +1,46 @@
+version: '3.1'
+
+services:
+
+  wordpress:
+    image: wordpress
+    restart: always
+    ports:
+      - 8000:80
+    environment:
+      WORDPRESS_DB_HOST: db
+      WORDPRESS_DB_USER: sayedusr
+      WORDPRESS_DB_PASSWORD: sayedpass
+      WORDPRESS_DB_NAME: sayedelhawary
+    volumes:
+      - wordpress:/var/www/html
+    
+
+
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: sayeddb
+      MYSQL_USER: sayeduser
+      MYSQL_PASSWORD: sayedpass
+      MYSQL_ROOT_PASSWORD: '1234'
+    volumes:
+      - db:/var/lib/mysql
+    
+  #image for php my admin
+  # phpmyadmin
+  phpmyadmin:
+    depends_on:
+      - db
+    image: phpmyadmin
+    restart: always
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+      MYSQL_ROOT_PASSWORD: 1234
+    
+volumes:
+  wordpress:
+  db:
